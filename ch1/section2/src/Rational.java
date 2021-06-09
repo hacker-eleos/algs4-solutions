@@ -10,28 +10,26 @@ public class Rational {
     }
 
     public Rational(int numerator, int denominator) {
-        if (denominator == 0) throw new IllegalArgumentException("denominator is zero");
-        if (denominator < 0) {
-            long gcd = gcd(-numerator, -denominator);
-            this.numerator = -numerator / gcd;
-            this.denominator = -denominator / gcd;
-        } else {
-            long gcd = gcd(numerator, denominator);
-            this.numerator = numerator / gcd;
-            this.denominator = denominator / gcd;
-        }
+        this((long) numerator, (long) denominator);
     }
 
 
     private Rational(long numerator, long denominator) {
-        if (denominator == 0L) throw new IllegalArgumentException("denominator is zero");
+        if (denominator == 0) throw new IllegalArgumentException("denominator is zero");
+        if (numerator == 0) {
+            this.numerator = 0;
+            this.denominator = 1;
+            return;
+        }
         long gcd = gcd(numerator, denominator);
-        if (denominator < 0L) {
-            this.numerator = -numerator / gcd;
-            this.denominator = -denominator / gcd;
+        numerator = numerator / gcd;
+        denominator = denominator / gcd;
+        if (denominator < 0) {
+            this.numerator = -numerator;
+            this.denominator = -denominator;
         } else {
-            this.numerator = numerator / gcd;
-            this.denominator = denominator / gcd;
+            this.numerator = numerator;
+            this.denominator = denominator;
         }
     }
 
@@ -71,6 +69,7 @@ public class Rational {
 
     @Override
     public String toString() {
+        if (denominator == 1L) return Long.toString(numerator);
         return this.numerator + "/" + this.denominator;
     }
 
