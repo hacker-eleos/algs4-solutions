@@ -1,5 +1,5 @@
 public class SmartDate {
-    private static final int[] daysInMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    private static final int[] daysInMonth = {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     private final int month;
     private final int day;
     private final int year;
@@ -22,8 +22,8 @@ public class SmartDate {
 
     private static boolean isValidDate(int month, int day, int year) {
         if (month < 1 || month > 12) return false;
-        if (day < 1 || day > daysInMonth[month]) return false;
-        if (day == 29 && month == 2 && !isLeapYear(year)) return false;
+        if (day < 1 || day > daysInMonth[month - 1]) return false;
+        if (month == 2 && day == 29 && !isLeapYear(year)) return false;
         return true;
     }
 
@@ -43,11 +43,21 @@ public class SmartDate {
         return year;
     }
 
+    public static void main(String[] args) {
+        SmartDate smartDate = new SmartDate(1, 15, 1972);
+        System.out.println(smartDate.dayOfTheWeek());
+    }
+
     public String dayOfTheWeek() {
-        int m = 0;
-        if (isLeapYear(this.year)) m = this.leapYearOffset[this.month];
-        else m = this.commonYearOffset[this.month-1];
+        int m;
+        if (isLeapYear(this.year)) m = this.leapYearOffset[this.month - 1];
+        else m = this.commonYearOffset[this.month - 1];
         int idx = R(day + m + 5 * R(year - 1, 4) + 4 * R(year - 1, 100) + 6 * R(year - 1, 400), 7);
         return days[idx];
+    }
+
+    @Override
+    public String toString() {
+        return month + "/" + day + "/" + year;
     }
 }
