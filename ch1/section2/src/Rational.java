@@ -10,7 +10,7 @@ public class Rational {
     }
 
     public Rational(int numerator, int denominator) {
-        this((long) numerator, (long) denominator);
+        this(numerator, (long) denominator);
     }
 
 
